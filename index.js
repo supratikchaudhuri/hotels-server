@@ -2,25 +2,34 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
-// import dotenv from "dotenv"
+import dotenv from "dotenv"
 
-import data from "./data.js";
+import userRouter from "./routes/userRouter.js"
+import productRouter from "./routes/productRouter.js";
 
+dotenv.config()
 const app = express()
+app.use(express.json())
 
-app.use(bodyParser.json({limit: "30mb", extended: true}));
-app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
+mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/hotels', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
+
+app.use(express.json({limit: "30mb", extended: true}));
+app.use(express.urlencoded({limit: "30mb", extended: true}));
 app.use(cors());
 
-const PORT = process.env.PORT || 5000;
 
 app.get("/", (req, res) => {
     res.send("Hello from Server");
 })
 
-app.get("/api/products", (req, res) => {
-    res.send(data.products);
-})
+app.use('/api/users', userRouter);
+app.use('/api/products', productRouter)
 
+//errors wrapped in expressAsyncHandler will be sent here
+app.use((err, req, res, next) => {
+    res.status(500).send(err.message)
+});
+
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {console.log(`server running on port: ${PORT}`)})
 
