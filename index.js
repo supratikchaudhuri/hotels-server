@@ -29,7 +29,7 @@ app.use('/api/orders', orderRouter)
 
 //errors wrapped in expressAsyncHandler will be sent here
 app.use((err, req, res, next) => {
-    res.status(500).send(err.message)
+    res.status(500).send(err)
 });
 
 const PORT = process.env.PORT || 5000;

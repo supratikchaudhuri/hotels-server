@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const orderSchema = new mongoose.Schema({
     orderItems: [{
         name: {type: String, required: true},
-        qty: {type: String, required: true},
+        qty: {type: Number, required: true},
         image: {type: String, required: true},
         price: {type: Number, required: true},
         product: {
@@ -12,14 +12,14 @@ const orderSchema = new mongoose.Schema({
             required: true
         }
     }],
-    billingAddress: {
+    billingDetails: {
         fullName: {type: String, required: true},
-        billingAddress: {type: String, required: true},
+        address: {type: String, required: true},
         requirements: {type: String},
     },
     paymentMethod: {type: String, required: true},
     itemsPrice: {type: Number, required: true},
-    shippingPrice: {type: Number, required: true},
+    convineincePrice: {type: Number, required: true},
     taxPrice: {type: Number, required: true},
     totalPrice: {type: Number, required: true},
 
@@ -30,7 +30,9 @@ const orderSchema = new mongoose.Schema({
     },
     isPaid: {type: Boolean, default: false},
     paidAt: {type: Date}, 
-}, {timeStamps: true})
+}, {
+    timeStamps: true
+});
 
 const Order = mongoose.model('Order', orderSchema);
 
