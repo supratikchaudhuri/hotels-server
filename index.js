@@ -26,6 +26,9 @@ app.get("/", (req, res) => {
 app.use('/api/users', userRouter);
 app.use('/api/products', productRouter)
 app.use('/api/orders', orderRouter)
+app.get('/api/config/paypal', (req, res) => {
+    res.send(process.env.PAYPAL_CLIENT_ID || 'sb'); 
+})
 
 //errors wrapped in expressAsyncHandler will be sent here
 app.use((err, req, res, next) => {

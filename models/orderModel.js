@@ -18,6 +18,12 @@ const orderSchema = new mongoose.Schema({
         requirements: {type: String},
     },
     paymentMethod: {type: String, required: true},
+    paymentResult: {
+        id: String,
+        status: String,
+        update_time: String,
+        email_address: String
+    },
     itemsPrice: {type: Number, required: true},
     convineincePrice: {type: Number, required: true},
     taxPrice: {type: Number, required: true},
@@ -31,7 +37,7 @@ const orderSchema = new mongoose.Schema({
     isPaid: {type: Boolean, default: false},
     paidAt: {type: Date}, 
 }, {
-    timeStamps: true
+    timestamps: true
 });
 
 const Order = mongoose.model('Order', orderSchema);
