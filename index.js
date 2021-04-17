@@ -10,14 +10,13 @@ import orderRouter from "./routes/orderRouter.js";
 
 dotenv.config()
 const app = express()
-app.use(express.json())
 
-mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/hotels', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
-
-app.use(express.json({limit: "30mb", extended: true}));
+app.use(express.json()) //parsing http data
+app.use(express.json({limit: "30mb", extended: true})); 
 app.use(express.urlencoded({limit: "30mb", extended: true}));
 app.use(cors());
 
+mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/hotels', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
 
 app.get("/", (req, res) => {
     res.send("Hello from Server");

@@ -8,6 +8,8 @@ import { generateToken, isAuth } from "../utils.js";
 const userRouter = express.Router(data.users);
 
 userRouter.get("/seed", expressAsyncHandler( async (req, res)=> {
+    await User.deleteMany({});
+
     const createdUsers = await User.insertMany(data.users);
     res.send({createdUsers})
 }))
@@ -37,6 +39,7 @@ userRouter.post("/register", expressAsyncHandler(async(req, res) => {
         password: bcrypt.hashSync(req.body.password, 8),
     });
     const createdUser = await newUser.save();
+    
     res.send({
         _id: createdUser._id,
         name: createdUser.name,
