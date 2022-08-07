@@ -3,7 +3,7 @@ import data from "../data.js";
 import User from "../models/userModel.js";
 import expressAsyncHandler from "express-async-handler"
 import bcrypt from "bcryptjs"
-import { generateToken, isAuth } from "../utils.js";
+import { generateToken, isAdmin, isAuth } from "../utils.js";
 
 const userRouter = express.Router(data.users);
 
@@ -29,7 +29,7 @@ userRouter.post('/signin', expressAsyncHandler(async(req, res) => {
             return;
         }
     }
-    res.status(401).send({message: 'Invalid user email/ password'})
+    res.status(401).send({message: 'Invalid user email/password'})
 }))
 
 userRouter.post("/register", expressAsyncHandler(async(req, res) => {
@@ -81,6 +81,47 @@ userRouter.put(
             isAdmin: updatedUser.isAdmin,
             token: generateToken(updatedUser),
         })
+    })
+)
+
+userRouter.get(
+    '/',
+    isAuth, isAdmin, 
+    expressAsyncHandler(async(req, res) => {
+        const users = await User.find({});
+        res.send(users)
+}))
+
+userRouter.delete(
+    '/:id',
+    isAuth, isAdmin, 
+    expressAsyncHandler(async(req, res) => {
+        const user = await User.findById(req.params.id);
+        if(user) {
+            if(user.isAdmin) {
+                res.status(400).send({message: "Cannot Delete Admin User"});
+                return;
+            }
+            const deletedUser = await user.remove();
+            res.send({message: "User is Deleted."})
+        } else {
+            res.status(404).send({message: "User does not exists"})
+        }
+}))
+
+userRouter.put(
+    '/:id/edit',
+    isAuth, isAdmin,
+    expressAsyncHandler(async(req, res) => {
+        const user = await User.findById(req.body.user);
+        if(user) {
+            user.isSeller = req.body.user.isSeller;
+            user.isAdmin = req.body.user.isAdmin;
+            const updatedUser = await user.save()
+            res.send({message: "User Privilages Updated"})
+        } else {
+            res.status(404).send({message: 'User Not Found'})
+        }
     })
 )
 

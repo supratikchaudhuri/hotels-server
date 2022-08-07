@@ -13,7 +13,37 @@ const data = {
             email: 'rikc@gmail.com',
             password: bcrypt.hashSync( '12345' , 8),
             isAdmin: false,
-        }
+        },
+        {
+            name: 'John Doe',
+            email: 'jd@gmail.com',
+            password: bcrypt.hashSync( '12345' , 8),
+            isAdmin: false,
+        },
+        {
+            name: 'Qwerty',
+            email: 'q@gmail.com',
+            password: bcrypt.hashSync( '12345' , 8),
+            isAdmin: true,
+        },
+        {
+            name: 'Alice',
+            email: 'a@gmail.com',
+            password: bcrypt.hashSync( '12345' , 8),
+            isAdmin: false,
+        },
+        {
+            name: 'Rachel',
+            email: 'r@gmail.com',
+            password: bcrypt.hashSync( '12345' , 8),
+            isAdmin: false,
+        },
+        {
+            name: 'Toto',
+            email: 't@gmail.com',
+            password: bcrypt.hashSync( '12345' , 8),
+            isAdmin: true,
+        },
     ],
     products: [
         {
