@@ -24,6 +24,7 @@ userRouter.post('/signin', expressAsyncHandler(async(req, res) => {
                 name: user.name,
                 email: user.email, 
                 isAdmin: user.isAdmin,
+                isSeller: user.isSeller,
                 token: generateToken(user),
             });
             return;

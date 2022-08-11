@@ -17,7 +17,7 @@ productRouter.get('/seed', expressAsyncHandler(async(req, res) => {
     res.send({createdProducts})
 }))
 
-//thisis last cuz otherwise seed will act as :id
+//this is last cuz otherwise seed will act as :id
 productRouter.get('/:id', expressAsyncHandler(async(req, res) => {
     const product = await Product.findById(req.params.id);
 
@@ -25,6 +25,15 @@ productRouter.get('/:id', expressAsyncHandler(async(req, res) => {
         res.send(product);
     else
         res.status(404).send({message : 'Product not found.'})
+}))
+
+productRouter.get('/seller-listings/:id', expressAsyncHandler(async(req, res) => {
+    const product = await Product.find({sellerId: req.params.id});
+
+    if(product)
+        res.send(product);
+    else
+        res.status(404).send({message : 'Product by seller not found.'})
 }))
 
 export default productRouter;
