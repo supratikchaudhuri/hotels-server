@@ -16,10 +16,19 @@ app.use(express.json({limit: "30mb", extended: true}));
 app.use(express.urlencoded({limit: "30mb", extended: true}));
 app.use(cors());
 
-mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/hotels', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
+// 'mongodb://localhost/hotels', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true}
+mongoose
+    .connect(process.env.MONGODB_URL, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
+    // .connect('mongodb://localhost/hotels', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
+    .then(() => {
+        console.log("connected to DB");
+    })
+    .catch(err => {
+        console.log("Error connecting to DB: ", err.message);
+    })
 
 app.get("/", (req, res) => {
-    res.send("Hello from Server");
+    res.send("Hello from Server")
 })
 
 app.use('/api/users', userRouter);
@@ -36,4 +45,12 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {console.log(`server running on port: ${PORT}`)})
+
+if(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
+    //tells the server to look for build in client
+    app.use(express.static('client/build'));
+    app.get('*', (req, res) => {
+        res.sendFile(path.json(__dirname + '/client/build/index.html'))
+    });
+}
 

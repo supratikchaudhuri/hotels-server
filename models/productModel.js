@@ -11,7 +11,12 @@ const productSchema = new mongoose.Schema({
     rating: { type: String, required: true,},
     numReviews: { type: Number, required: true,},
     description: { type: String, required: true,},
-    sellerId: { type: String, required: true, default: '6214a8d79b885a4914253f25'}
+    sellerId: { type: mongoose.Schema.Types.ObjectId, required: true, default: '6214a8d79b885a4914253f25'},
+    // orderedBy: [{{type: mongoose.Schema.Types.ObjectId, required: true}, default: [{ObjectId("6214a8d79b885a4914253f28")}]}]
+    orderedBy: {type: [
+            {customerId: {type: mongoose.Schema.Types.ObjectId, required: true}}
+        ], default: [{customerId: "6214a8d79b885a4914253f28"}]}
+    ,
 }, {
     timestamps: true
 });
