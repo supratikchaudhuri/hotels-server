@@ -18,7 +18,7 @@ app.use(cors());
 
 // 'mongodb://localhost/hotels', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true}
 mongoose
-    .connect(process.env.MONGODB_URL, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
+    .connect(process.env.MONGODB_URL || 'mongodb://localhost/hotels', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
     // .connect('mongodb://localhost/hotels', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
     .then(() => {
         console.log("connected to DB");
